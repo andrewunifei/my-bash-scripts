@@ -1,0 +1,20 @@
+#!/bin/bash
+
+while test $# -ge 2
+do
+    eval _$1='$2'
+    shift
+    shift
+done
+
+foo=$(echo $_album | tr -d "’-")
+album_name=${foo//[[:blank:]]/}
+path="/home/andrew/Música/.covers/${album_name}.jpg"
+
+if [ -n "$_title" ] && [ $_status != "paused" ]
+then
+    notify-send --expire-time=4000 --icon=$path "$_title" "$_artist - $_album"
+elif [ $_status == "paused" ]
+then
+    notify-send --expire-time=2000 "Music paused"
+fi
